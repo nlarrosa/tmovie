@@ -1,24 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { Avatar, Box, Grid, IconButton, Paper, Typography } from '@mui/material';
-
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Chip } from '@mui/material';
-import { ProductContext } from '../../contexts/ProductContext';
-// import { useNavigate } from 'react-router-dom';
-
+import VideoChatIcon from '@mui/icons-material/VideoChat';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { MoviesContext } from '../../contexts/MoviesContext';
+import { MovieModal } from '../../components/ui/modals/MovieModal';
+import { useModal } from '../../Hooks/useModal';
 
 
 
-
-export const ProductsPage = () => {
+export const MoviePage = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(0);
-  const { getAllProducts, state, isLoading } = useContext(ProductContext);
-  const [rowsData, setRowsData] = useState([]);
-//   const navigate = useNavigate();
+  const { getAllMovies, state} = useContext(MoviesContext);
+  const { open, handleClose, handleOpen } = useModal();
+
+
 
 
 useEffect(() => {
@@ -26,9 +24,11 @@ useEffect(() => {
 }, [])
 
 const init = async() => {
-    const data = await getAllProducts();
-    setRowsData(data);
+    getAllMovies();
 }
+
+
+
 
   const getButtonsActions = () => {
 
@@ -36,22 +36,22 @@ const init = async() => {
       <>
           <IconButton
             color='info'
-            title='Editar'
-            // onClick={() => navigate(`/usuarios/editar/${row.id}`)}
+            title='Ver Reseña'
+            onClick={() => handleOpen()}
           >
-            <DriveFileRenameOutlineIcon
+            <VideoChatIcon
               fontSize='medium'
               color='info'
             />
           </IconButton>
-
           <IconButton
-            color='warning'
-            title='Deshabilitar Usuario'
+            color='info'
+            title='Editar'
+            onClick={() =>{}}
           >
-            <DeleteOutlineIcon
+            <EditNoteIcon
               fontSize='medium'
-              color='danger'
+              color='info'
             />
           </IconButton>
       </>
@@ -62,19 +62,19 @@ const init = async() => {
   
     {
       flex: 0.1,
-      field: 'id',
+      field: 'tmbdId',
       headerName: 'ID',
       minWidth: 50,
     },
 
     {
       flex: 0.15,
-      field: 'image',
-      headerName: 'Imagen',
+      field: 'poster',
+      headerName: 'Portada',
       minWidth: 100,
       renderCell: ({ row }) => {
         return(
-          <Avatar alt="Remy Sharp" src={'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.smartcel.com.mx%2F&psig=AOvVaw1PUx_RKkeqCUOj6xgyHfdx&ust=1703652876813000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCMjCxtinrIMDFQAAAAAdAAAAABAD'} sx={{ width: 40, height: 40 }}/>
+          <Avatar alt="Remy Sharp" src={`https://image.tmdb.org/t/p/w500/${row.poster}`} sx={{ width: 50, height: 50 }}/>
         )
       }
     }, 
@@ -82,44 +82,15 @@ const init = async() => {
     {
       flex: 0.25,
       field: 'title',
-      headerName: 'Producto',
+      headerName: 'Pelicula',
       minWidth: 150,
     },
     {
       flex: 0.50,
       field: 'description',
-      headerName: 'Detalle',
+      headerName: 'Historia',
       minWidth: 150,
     },
-    {
-      flex: 0.25,
-      field: 'category',
-      headerName: 'Categoria',
-      minWidth: 150,
-    }, 
-    {
-      flex: 0.1,
-      field: 'price',
-      headerName: 'Precio',
-      minWidth: 120,
-      renderCell: ({ row }) => {
-        return(<Typography>u$s 100</Typography>)
-      }
-    }, 
-    {
-      flex: 0.15,
-      field: 'stock',
-      headerName: 'Stock',
-      minWidth: 150,
-      renderCell: ({ row }) => {
-        return (
-          <Box>
-             <Chip label={`stock: 10`} color="default" size="small" sx={{ width: 80, justifyContent: 'flex-start'}}/>
-          </Box>
-        )
-      }
-    }, 
-
     {
       flex: 0,
       field: 'acciones',
@@ -147,17 +118,18 @@ const init = async() => {
             variant='h5' 
             fontFamily={'fantasy'}
           >
-            Lista de Productos
+            Lista de Peliculas
           </Typography>
       </Grid>
       <Grid item xs={12} md={12}>
         <Paper>
           <div style={{ width: '100%', height: 650 }}>
             <DataGrid 
-              loading={isLoading}
+              // loading={isLoading}
               // autoHeight
               // checkboxSelection
-              rows={rowsData} 
+              rows={state?.movies} 
+              getRowId={(row) => row.tmbdId}
               columns={columns} 
               paginationMode='client'
               pageSize={pageSize}
@@ -179,6 +151,10 @@ const init = async() => {
           </div>
         </Paper>
       </Grid>
+      <MovieModal 
+        openModal={open}
+        modalClose={handleClose}
+      />
     </Grid>
   )
 }

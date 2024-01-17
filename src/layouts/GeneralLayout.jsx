@@ -10,7 +10,8 @@ import { NavBar } from '../components/ui';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { Route, Routes } from 'react-router-dom';
-import { ProductsPage } from '../pages/products/ProductsPage';
+import { MoviePage } from '../pages/movies';
+
 
 
 const defaultTheme = createTheme();
@@ -56,7 +57,7 @@ export function GeneralLayout() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} >
             
           <Routes>
-            <Route path='/products' element={<ProductsPage />} />
+            <Route path='/movies' element={<MoviePage />} />
             <Route path='/users' element={<h1>USERS PAGE</h1>} />
             <Route path='/sales' element={<h1>SALES PAGE</h1>} />
           </Routes>

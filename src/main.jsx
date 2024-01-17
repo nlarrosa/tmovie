@@ -4,16 +4,19 @@ import App from './App.jsx';
 import { AuthProvider } from './providers/AuthProvider.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import { ProductProvider } from './providers/ProductProvider.jsx';
+import { MovieProvider } from './providers/MovieProvider.jsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <ProductProvider>
-       <BrowserRouter>
-           <App />
-       </BrowserRouter>
-      </ProductProvider>
+      <MovieProvider>
+        <ProductProvider>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+        </ProductProvider>
+      </MovieProvider>
     </AuthProvider>
   </React.StrictMode>,
 )

@@ -15,6 +15,10 @@ export const AppRoutes = () => {
     checkToken();
   }, [])
 
+  // if(!isLogged){
+  //   return <h1>LOADING...</h1>
+  // }
+
 
   return (
     <Routes>

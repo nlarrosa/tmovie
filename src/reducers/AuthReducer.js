@@ -1,3 +1,4 @@
+import { types } from "../types/types"
 
 
 
@@ -6,7 +7,7 @@ export const AuthReducer = (state={}, action) => {
 
     switch (action.type) {
 
-        case 'LOGIN':
+        case types.auth.login:
             return{
                 ...state,
                 user: action.payload.user, 
@@ -14,7 +15,7 @@ export const AuthReducer = (state={}, action) => {
                 token: action.payload.token,
             }
 
-        case 'LOGOUT':
+        case types.auth.logout:
             return{
                 ...state,
                 user: null, 
@@ -22,15 +23,10 @@ export const AuthReducer = (state={}, action) => {
                 token: '',
             }
 
-        case 'ERROR-MESSAGE':
+        case types.auth.errorMsg:
             return {
                 ...state,
                 message: action.payload.msg,
-            }
-
-        case 'RECOVERY':
-            return{
-                newPassword: action.payload.newpassword
             }
     
         default:

@@ -3,6 +3,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useReducer } from 'react';
 import { AuthReducer } from '../reducers/AuthReducer';
 import { axiosDash } from '../config/dashAxios';
+import { types } from '../types/types';
 
 
 
@@ -19,21 +20,20 @@ export const AuthProvider = ({ children }) => {
   const [ state, dispatch ] = useReducer(AuthReducer, initialValues);
   
   
-  const login = async(email, pass) => {
-    
+  const login = async(email, password) => {
     
     try {
         const { data } = await axiosDash.post('/auth/user/login', {
-          email: email,
-          password: pass,
+          email,
+          password,
         });
-        
+
+
         const objectStorage = {
           user: {
             id: data.resp.id,
-            username: data.resp.name,
             email: data.resp.email,
-            firstName: data.resp.name,
+            name: data.resp.name,
             lastName: data.resp.lastName,
           },
           token: data.resp.token
@@ -42,13 +42,19 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', JSON.stringify(objectStorage));
   
         dispatch({
-          type: 'LOGIN',
+          type: types.auth.login,
           payload: objectStorage
-        })
-      } catch (error) {
-        console.log(error)
-      }
+        });
 
+      } catch (error) {
+
+        dispatch({
+          type: types.auth.errorMsg,
+          payload: {
+            message: error.response.data
+          }
+        })
+      }
     }
 
 
@@ -58,43 +64,46 @@ export const AuthProvider = ({ children }) => {
          const dataToken = JSON.parse(token);
 
          if(!token){
-          dispatch({
-            type: 'LOGOUT'
+          return dispatch({
+            type: types.auth.logout
           });
          }
 
-         axiosDash.interceptors.request.use( config  => {
-          config.headers = {
+         axiosDash.interceptors.request.use( config => {
+            config.headers = {
               ...config.headers,
               'x-token-data': dataToken.token,
-          }
-          return  config;
-        });
+            }
+            return config;
+         });
 
-         const {data} = await axiosDash.get('/auth/user/review/token');
+         const { data } = await axiosDash.get('/auth/user/review/token');
+  
+         const objectStorage = {
+          user: {
+            id: dataToken.user.id,
+            email: dataToken.user.email,
+            name: dataToken.user.name,
+            lastName: dataToken.user.lastName,
+          },
+          token: data.resp.token
+        }
+
+        localStorage.setItem('token', JSON.stringify(objectStorage));
 
          dispatch({
-          type: 'LOGIN',
-          payload: {
-            user: {
-              id: dataToken.user.id,
-              username: dataToken.user.username,
-              email: dataToken.user.email,
-              firstName: dataToken.user.firstName,
-              lastName: dataToken.user.lastName,
-              gender: dataToken.user.gender,
-            },
-            token: data.resp.token
-          }
+          type: types.auth.login,
+          payload: objectStorage
         });
     }
 
 
-
     const logout = () => {
+
+        localStorage.clear();
       
         dispatch({
-          type: 'LOGOUT',
+          type: types.auth.logout,
         })
     }
 

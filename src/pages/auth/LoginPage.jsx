@@ -17,7 +17,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 export const LoginPage = () => {
 
    
-    const { login } = useContext(AuthContext);
+    const { login, state } = useContext(AuthContext);
     const title = 'TMovie';
     const { formState, onChangeInput } = useForm();
 
@@ -65,10 +65,12 @@ export const LoginPage = () => {
               onChange={onChangeInput}
             />
 
+           
             <FormHelperText
               id="component-helper-text"
               sx={{ color:'red' }}
             >
+              
             </FormHelperText>
 
             <Button
