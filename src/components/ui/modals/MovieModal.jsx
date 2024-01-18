@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import { Grid, Typography } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,12 +26,13 @@ export const MovieModal = ({ openModal, modalClose }) => {
         onClose={modalClose}
         aria-describedby="alert-dialog-slide-description"
         >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
         <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            </DialogContentText>
+            <Grid xs={12} sm={4}>
+              <img src={`https://image.tmdb.org/t/p/w500/acNRGwBz22E2m5OEWOhS8RiqiXM.jpg`} width={200} />
+            </Grid>
+            <Grid xs={12} sm={8}>
+              <Typography variant='h4'>Title</Typography>
+            </Grid>
         </DialogContent>
         <DialogActions>
             <Button onClick={modalClose}>Disagree</Button>

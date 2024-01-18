@@ -10,7 +10,7 @@ import { NavBar } from '../components/ui';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { Route, Routes } from 'react-router-dom';
-import { MoviePage } from '../pages/movies';
+import { MovieEdit, MoviePage } from '../pages/movies';
 
 
 
@@ -58,7 +58,7 @@ export function GeneralLayout() {
             
           <Routes>
             <Route path='/movies' element={<MoviePage />} />
-            <Route path='/users' element={<h1>USERS PAGE</h1>} />
+            <Route path='/movie/:tmbdId' element={<MovieEdit />} />
             <Route path='/sales' element={<h1>SALES PAGE</h1>} />
           </Routes>
 
