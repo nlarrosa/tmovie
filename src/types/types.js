@@ -7,6 +7,7 @@ export const types = {
     },
 
     movie: {
-        getMovies: 'GET MOVIES [MOVIES]'
+        getMovies: 'GET MOVIES [MOVIES]',
+        getMovie: 'GET MOVIE [MOVIES]'
     }
 }

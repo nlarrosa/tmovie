@@ -12,6 +12,12 @@ export const MovieReducer = (state={}, action) => {
                 isLoading: false,
                 search: action.payload.search
             }
+
+        case types.movie.getMovie:
+            return {
+                ...state,
+                movie: action.payload.movie,
+            }
     
         default:
             return state

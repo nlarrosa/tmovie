@@ -6,6 +6,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import { MoviesContext } from '../../contexts/MoviesContext';
 import { MovieModal } from '../../components/ui/modals/MovieModal';
 import { useModal } from '../../Hooks/useModal';
+import { useNavigate } from 'react-router';
 
 
 
@@ -13,8 +14,23 @@ export const MoviePage = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(0);
-  const { getAllMovies, state} = useContext(MoviesContext);
+  const { getAllMovies, getMovieRatingById, state} = useContext(MoviesContext);
   const { open, handleClose, handleOpen } = useModal();
+  const [dataMovie, setDataMovie] = useState({});
+
+
+  const handleOpenModalData = (tmbdId) => {
+    getMovieRatingById(tmbdId);
+    
+  }
+
+
+  useEffect( () => {
+    if(state.movie){
+      setDataMovie(state.movie);
+      handleOpen();
+    }
+  }, [state.movie])
 
 
 
@@ -28,16 +44,16 @@ const init = async() => {
 }
 
 
+  const getButtonsActions = (row) => {
 
-
-  const getButtonsActions = () => {
+    const navigate = useNavigate();
 
     return (
       <>
           <IconButton
             color='info'
             title='Ver Reseña'
-            onClick={() => handleOpen()}
+            onClick={() => handleOpenModalData(row.tmbdId)}
           >
             <VideoChatIcon
               fontSize='medium'
@@ -47,7 +63,7 @@ const init = async() => {
           <IconButton
             color='info'
             title='Editar'
-            onClick={() =>{}}
+            onClick={() => navigate(`/movie/${row.tmbdId}`)}
           >
             <EditNoteIcon
               fontSize='medium'
@@ -99,7 +115,7 @@ const init = async() => {
       renderCell: ({ row }) => {
         return (
           <Box>
-            {getButtonsActions()}
+            {getButtonsActions(row)}
           </Box>
         )
       }
@@ -154,6 +170,7 @@ const init = async() => {
       <MovieModal 
         openModal={open}
         modalClose={handleClose}
+        data={dataMovie}
       />
     </Grid>
   )

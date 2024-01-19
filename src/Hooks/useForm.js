@@ -27,5 +27,6 @@ export const useForm = () => {
     ...formState,
     formState,
     onChangeInput,
+    setFormState
   }
 }
