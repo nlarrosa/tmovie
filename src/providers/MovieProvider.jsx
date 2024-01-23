@@ -3,6 +3,8 @@ import { MoviesContext } from '../contexts/MoviesContext';
 import { MovieReducer } from '../reducers/MovieReducer';
 import { axiosDash } from '../config/dashAxios';
 import { types } from '../types/types';
+import { AlertReducer } from '../reducers/AlertReducer';
+import { alertStatus } from '../config/alertStatus';
 
 const initialValue = {
     movies: [],
@@ -10,9 +12,17 @@ const initialValue = {
     search: ''
 }
 
+const initialValueMsg = {
+    title: null,
+    msg: null,
+    icon: null,
+    color: null
+}
+
 export const MovieProvider = ({ children }) => {
 
     const [ state, dispatch ] = useReducer(MovieReducer, initialValue);
+    const [ stateAlert, disptachAlert ] = useReducer(AlertReducer, initialValueMsg)
 
 
     const getAllMovies = async() => {
@@ -76,20 +86,47 @@ export const MovieProvider = ({ children }) => {
         try {
             const { tmbdId } = objectMovie;
             const { data } = await axiosDash.put(`/movies/${tmbdId}`, objectMovie);
-            console.log(data);
+            const { resp } = data;
+
+            if(data.status == 200){
+                disptachAlert({
+                    type: types.alertMsg.general,
+                    payload: {
+                        type: alertStatus.success,
+                        title: 'Exito!',
+                        msg: 'Loas datos se actualizaron correctamente',
+                    }
+                });
+            }
             
         } catch (error) {
-            console.log(error)
+
+            disptachAlert({
+                type: types.alertMsg.error,
+                payload: {
+                    title: 'Error!',
+                    msg: error,
+                }
+            });
         }
+    };
+
+
+    const clearAlertMsg = () => {
+        disptachAlert({
+            type: types.alertMsg.clear
+        })
     }
 
 
   return (
     <MoviesContext.Provider value={{
         state,
+        stateAlert,
         getAllMovies,
         getMovieRatingById,
-        updateMovieById
+        updateMovieById,
+        clearAlertMsg
     }}>
         { children }
     </MoviesContext.Provider>

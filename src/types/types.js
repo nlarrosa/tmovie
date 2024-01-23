@@ -9,5 +9,13 @@ export const types = {
     movie: {
         getMovies: 'GET MOVIES [MOVIES]',
         getMovie: 'GET MOVIE [MOVIES]'
+    },
+
+    alertMsg: {
+        success: 'GET SUCCES [ALERT]',
+        error: 'GET ERROR [ALERT]',
+        info: 'GET INFO [ALERT]',
+        general: 'GET GENERAL [ALERT]',
+        clear: 'GET CLEAR [ALERT]'
     }
 }

@@ -4,6 +4,7 @@ import { useReducer } from 'react';
 import { AuthReducer } from '../reducers/AuthReducer';
 import { axiosDash } from '../config/dashAxios';
 import { types } from '../types/types';
+import { AlertReducer } from '../reducers/AlertReducer';
 
 
 
@@ -14,10 +15,18 @@ const initialValues = {
   message: ''
 }
 
+const initialValueMsg = {
+  title: null,
+  msg: null,
+  icon: null,
+  color: null
+}
+
 
 export const AuthProvider = ({ children }) => {
   
   const [ state, dispatch ] = useReducer(AuthReducer, initialValues);
+  const [ stateAlert, dispatchAlert ] = useReducer(AlertReducer, initialValueMsg);
   
   
   const login = async(email, password) => {

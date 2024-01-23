@@ -1,7 +1,7 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 
-export const MovieSnack = ({handleClose, open}) => {
+export const MovieSnack = ({handleClose, open, msg, color}) => {
 
 
   return (
@@ -13,11 +13,11 @@ export const MovieSnack = ({handleClose, open}) => {
     >
         <Alert
             onClose={handleClose}
-            severity={'error'}
+            severity={color}
             variant="filled"
             sx={{ width: '100%' }}
         >
-            un mensaje
+            {msg}
         </Alert>
     </Snackbar>
   )

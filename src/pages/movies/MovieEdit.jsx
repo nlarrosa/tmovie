@@ -1,22 +1,38 @@
-import React, { useContext, useEffect } from 'react';
-import LoadingButton from '@mui/lab/LoadingButton';
+import React, { useContext, useEffect, useReducer } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useParams } from 'react-router';
 import { MoviesContext } from '../../contexts/MoviesContext';
 import { useForm } from '../../Hooks/useForm';
+import { MovieSnack } from '../../components/ui/modals/MovieSnack';
+import { useModal } from '../../Hooks/useModal';
+import { alertStatus } from '../../config/alertStatus';
+import { AlertReducer } from '../../reducers/AlertReducer';
+import { types } from '../../types/types';
+
 
 
 export const MovieEdit = () => {
 
     const {tmbdId} = useParams();
-    const { getMovieRatingById, updateMovieById, state } = useContext(MoviesContext);
+    const { getMovieRatingById, updateMovieById, state, stateAlert, clearAlertMsg } = useContext(MoviesContext);
     const { formState, onChangeInput, setFormState } = useForm();
+    const { open, handleClose, handleOpen } = useModal();
    
     useEffect(() => {
         getMovieRatingById(tmbdId);
     }, []);
+
+    useEffect(() => {
+        if(stateAlert.type == alertStatus.success){
+            handleOpen();
+            setTimeout(() => {
+                clearAlertMsg();
+            }, 4000);
+        }
+    }, [stateAlert.type]);
+    
 
 
     useEffect(() => {
@@ -90,7 +106,7 @@ export const MovieEdit = () => {
                         />
                     </Grid>
                 </Grid>
-                <LoadingButton
+                <Button
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -98,9 +114,15 @@ export const MovieEdit = () => {
                     sx={{ mt: 3, mb: 2 }}
                 >
                     ACTUALIZAR
-                </LoadingButton>
+                </Button>
             </Box>
         </Grid>
+        <MovieSnack 
+            open={open}
+            handleClose={handleClose}
+            msg={stateAlert?.msg}
+            color={stateAlert.color}
+        />
     </Grid>
   )
 }
