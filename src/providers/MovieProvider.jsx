@@ -84,6 +84,9 @@ export const MovieProvider = ({ children }) => {
     const updateMovieById = async(objectMovie) => {
 
         try {
+
+            clearAlertMsg();
+            
             const { tmbdId } = objectMovie;
             const { data } = await axiosDash.put(`/movies/${tmbdId}`, objectMovie);
             const { resp } = data;

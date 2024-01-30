@@ -27,9 +27,6 @@ export const MovieEdit = () => {
     useEffect(() => {
         if(stateAlert.type == alertStatus.success){
             handleOpen();
-            setTimeout(() => {
-                clearAlertMsg();
-            }, 4000);
         }
     }, [stateAlert.type]);
     
